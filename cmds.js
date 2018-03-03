@@ -47,11 +47,19 @@ exports.editCMD = (rl,id)  =>{
 		rl.prompt();
 	}else{
 		try{
+
+			const quiz = model.getByIndex(id);
+
+			process.stdout.isTTY && setTimeout(() => {rl.write(quiz.question)},0);
+
 			rl.question(colorize('Intorduzca una pregunta: ', 'red'), question => {
+
+				process.stdout.isTTY && setTimeout(() => {rl.write(quiz.answer)},0);
+
 				rl.question(colorize('Introduzca la respuesta', 'red'), answer => {
 				model.update(id, question, answer);
 				log(` Se ha cambiado el quiz ${colorize(id, 'magenta')} por: ${question} ${colorize( '=>', 'magenta')} ${answer}`);
-					rl.prompt();
+				rl.prompt();
 				});
 			});
 		}catch(error) {
@@ -85,7 +93,7 @@ exports.testCMD = (rl, id)  =>{
 };
 
 exports.playCMD = rl =>{
-	log('Jugar.', 'red');
+	log('Jugar.', 'red'); 
 	rl.prompt();
 };
 
