@@ -66,9 +66,11 @@ exports.editCMD = (rl,id)  =>{
 			errorlog(error.message);
 			rl.prompt();
 		}
+
 	}
-	
 };
+	
+
 
 exports.showCMD = (rl, id)  =>{
 	
@@ -88,7 +90,34 @@ exports.showCMD = (rl, id)  =>{
 };
 
 exports.testCMD = (rl, id)  =>{
-	log('Probar el quiz indicado.','red');
+	if (typeof id === "undefined"){
+		errorlog(`Falta el parámetro id.`);
+		rl.prompt();
+	}else{
+		try{
+
+			const quiz = model.getByIndex(id);
+			log(`${colorize(quiz.question,'red')}`);
+			rl.question(('Introduzca la respuesta'), answer => {
+
+				if(answer.toLowerCase().trim() === quiz.answer){
+					log(`Su respuesta es:`);
+					biglog('Correcta','green');
+					rl.prompt();
+				}
+				else{if(answer.toLowerCase().trim() !== quiz.answer){
+					log(`Su respuesta es:`);
+					biglog('Incorrecta','red');
+					rl.prompt();
+				}
+			}
+				
+			});
+
+		}catch(error){
+			errorlog(error.message);
+		}
+	}
 	rl.prompt();
 };
 

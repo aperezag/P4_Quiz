@@ -112,7 +112,7 @@ exports.getByIndex = id => {
   if(typeof quiz === "undefined") {
     throw new Error (`El valor del parámetro id no es válido.`);
   }
-  return JSON.pasre(JSON.stirngify(quiz));
+  return JSON.parse(JSON.stringify(quiz));
 };
 
 /**
