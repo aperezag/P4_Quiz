@@ -106,7 +106,7 @@ exports.testCMD = (rl, id)  =>{
 					rl.prompt();
 				}
 				else{
-					if(resp.toLowerCase().trim() !== quiz.answer){
+					if(resp.toLowerCase().trim() !== (quiz.answer).toLowerCase().trim()){
 					log(`Su respuesta es:`);
 					biglog('Incorrecta','red');
 					rl.prompt();
