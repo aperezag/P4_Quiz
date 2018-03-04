@@ -100,21 +100,18 @@ exports.testCMD = (rl, id)  =>{
 			log(`${colorize(quiz.question,'red')}`);
 			rl.question(('Introduzca la respuesta'), resp => {
 
-				if(resp.toLowerCase().trim() === quiz.answer){
+				if(resp.toLowerCase().trim() === (quiz.answer).toLowerCase().trim()){
 					log(`Su respuesta es:`);
 					biglog('Correcta','green');
 					rl.prompt();
 				}
 				else{
+					if(resp.toLowerCase().trim() !== quiz.answer){
 					log(`Su respuesta es:`);
 					biglog('Incorrecta','red');
 					rl.prompt();
-					/*if(resp.toLowerCase().trim() !== quiz.answer){
-					log(`Su respuesta es:`);
-					biglog('Incorrecta','red');
-					rl.prompt();*/
 				}
-			//}
+			}
 				
 			});
 
