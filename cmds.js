@@ -102,13 +102,13 @@ exports.testCMD = (rl, id)  =>{
 
 				if(resp.toLowerCase().trim() === (quiz.answer).toLowerCase().trim()){
 					log(`Su respuesta es:`);
-					biglog('Correcta','green');
+					log('Correcta','green');
 					rl.prompt();
 				}
 				else{
 					if(resp.toLowerCase().trim() !== (quiz.answer).toLowerCase().trim()){
 					log(`Su respuesta es:`);
-					biglog('Incorrecta','red');
+					log('Incorrecta','red');
 					rl.prompt();
 				}
 			}
