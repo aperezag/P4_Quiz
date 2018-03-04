@@ -98,19 +98,23 @@ exports.testCMD = (rl, id)  =>{
 
 			const quiz = model.getByIndex(id);
 			log(`${colorize(quiz.question,'red')}`);
-			rl.question(('Introduzca la respuesta'), answer => {
+			rl.question(('Introduzca la respuesta'), resp => {
 
-				if(answer.toLowerCase().trim() === quiz.answer){
+				if(resp.toLowerCase().trim() === quiz.answer){
 					log(`Su respuesta es:`);
 					biglog('Correcta','green');
 					rl.prompt();
 				}
-				else{if(answer.toLowerCase().trim() !== quiz.answer){
+				else{
 					log(`Su respuesta es:`);
 					biglog('Incorrecta','red');
 					rl.prompt();
+					/*if(resp.toLowerCase().trim() !== quiz.answer){
+					log(`Su respuesta es:`);
+					biglog('Incorrecta','red');
+					rl.prompt();*/
 				}
-			}
+			//}
 				
 			});
 
