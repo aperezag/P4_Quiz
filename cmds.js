@@ -123,8 +123,44 @@ exports.testCMD = (rl, id)  =>{
 };
 
 exports.playCMD = rl =>{
-	log('Jugar.', 'red'); 
-	rl.prompt();
+	let score = 0;
+	let toBeResolved = [];
+	let quizzes = model.getAll();
+	for(let i = 0;  i< quizzes.length;i++){
+		toBeResolved[i]=quizzes[i];
+	}
+
+	const playOne = () => {
+		if(toBeResolved.length === 0){
+			log(`No quedan más preguntas`,'red');
+			log(`Ha acertado: ${colorize(score, "green")} preguntas`);
+			rl.prompt();
+		}else{
+			let id = Math.floor(Math.random()*toBeResolved.length);
+			let quiz = quizzes[id];
+
+			rl.question(`${colorize(quiz.question, "red")}`, resp => {
+				if (resp.toLowerCase().trim() === quiz.answer.toLowerCase().trim()){
+					score++;
+					log(`¡La respuesta es correcta!`,'green');
+					log(`Lleva ${colorize(score, 'green')} aciertos`);
+					toBeResolved.splice(id,1);
+					quizzes.splice(id,1);
+					playOne();
+				}else{
+					log(`Incorrecta`, "red");
+					Fin();
+					rl.prompt();
+				}
+			});
+		}
+	};
+	const Fin = () => {
+		log(`Final del juego`, "red");
+		log(`${colorize(score, 'magenta')} aciertos`);
+	}
+	playOne();
+
 };
 
 exports.deleteCMD = (rl, id)  =>{
