@@ -92,8 +92,8 @@ rl
       break;
 
     default:
-      console.log(socket, `Comando desconocido: '${colorize(cmd, 'red')}'`);
-      console.log(socket, `Use ${colorize('help', 'green')} para ver todos los comandos disponibles.`);
+      log(socket, `Comando desconocido: '${colorize(cmd, 'red')}'`);
+      log(socket, `Use ${colorize('help', 'green')} para ver todos los comandos disponibles.`);
       rl.prompt();
       break;
   }

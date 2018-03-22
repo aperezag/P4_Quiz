@@ -4,7 +4,7 @@ const {models} = require('./model');
 
 const {log, biglog, errorlog, colorize} = require("./out");
 
-exports.helpCMD = (socket,rl) =>{
+exports.helpCMD = (socket, rl) =>{
 	  log(socket,"Comandos:");
       log(socket,"		h|help - Muestra esta ayuda.");
       log(socket,"		list - Listar los quizzes existentes.");
@@ -119,15 +119,15 @@ exports.editCMD = (socket,rl,id)  =>{
 };
 	
 
-const validateId = (socket,id) => {
+const validateId = id => {
 
     return new Sequelize.Promise((resolve,reject) => {
         if (typeof id === "undefined") {
-            reject(new Error(socket,`Falta el parametro <id>.`));
+            reject(new Error(`Falta el parametro <id>.`));
         } else {
             id = parseInt(id);
             if (Number.isNaN(id)) {
-                reject( new Error(socket,`El valor del parametro <id< no es un numero`));
+                reject( new Error(`El valor del parametro <id< no es un numero`));
             } else {
                 resolve(id);
             }
@@ -137,7 +137,7 @@ const validateId = (socket,id) => {
 
 exports.showCMD = (socket,rl, id)  =>{
 	
-	validateId(socket,id)
+	validateId(id)
 	.then(id => models.quiz.findById(id))
 	.then(quiz => {
 		if(!quiz){
@@ -188,12 +188,12 @@ exports.playCMD = (socket,rl) => {
     let score = 0;
     let toBeResolved = [];
 
-    const playOne = (socket) => {
+    const playOne = () => {
         return new Promise((resolve,reject) => {
 
             if(toBeResolved.length <=0){
-                console.log(socket,"No hay nada mas que preguntar.");
-                console.log(socket,"Fin del juego. Aciertos:" ,score);
+                log(socket,"No hay nada mas que preguntar.");
+                log(socket,"Fin del juego. Aciertos:" ,score);
                 resolve();
                 return;
             }
@@ -205,11 +205,11 @@ exports.playCMD = (socket,rl) => {
                 .then(answer => {
                     if(answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim()){
                         score++;
-                        console.log(socket,"CORRECTO - Lleva ",score, "aciertos.");
+                        log(socket,"CORRECTO - Lleva ",score, "aciertos.");
                         resolve(playOne());
                     } else {
-                        console.log(socket,"INCORRECTO.");
-                        console.log(socket,"Fin del juego. Aciertos:",score);
+                        log(socket,"INCORRECTO.");
+                        log(socket,"Fin del juego. Aciertos:",score);
                         resolve();
                     }
                 })
@@ -221,10 +221,10 @@ exports.playCMD = (socket,rl) => {
             toBeResolved = quizzes;
         })
         .then(() => {
-            return playOne(socket);
+            return playOne();
         })
         .catch(error => {
-            console.log(socket,error);
+            log(socket,error);
         })
 
         .then(() => {
@@ -233,7 +233,7 @@ exports.playCMD = (socket,rl) => {
 
         });
 };
-exports.deleteCMD = (socket, rl, id)  =>{
+exports.deleteCMD = (socket,rl, id)  =>{
 	
 	validateId(id)
 	.then(id => models.quiz.destroy({where: {id}}))
