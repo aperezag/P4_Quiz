@@ -188,7 +188,7 @@ exports.playCMD = (socket,rl) => {
     let score = 0;
     let toBeResolved = [];
 
-    const playOne = () => {
+    const playOne = (socket) => {
         return new Promise((resolve,reject) => {
 
             if(toBeResolved.length <=0){
@@ -221,7 +221,7 @@ exports.playCMD = (socket,rl) => {
             toBeResolved = quizzes;
         })
         .then(() => {
-            return playOne();
+            return playOne(socket);
         })
         .catch(error => {
             log(socket,error);
