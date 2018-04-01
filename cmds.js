@@ -164,10 +164,10 @@ exports.testCMD = (socket,rl,id) => {
             return makeQuestion(rl,  ` ${quiz.question}? `)
                 .then(a => {
                     if(quiz.answer.toUpperCase() === a.toUpperCase().trim()){
-                        log(socket,"Su respuesta es correcta.");
+                        log(socket,"Su respuesta es :");
                         biglog(socket,'Correcta', 'green');
                     } else{
-                        log(socket,"Su respuesta es incorrecta.");
+                        log(socket,"Su respuesta es :");
                         biglog(socket,'Incorrecta', 'red');
                     }
                 });
@@ -205,11 +205,11 @@ exports.playCMD = (socket,rl) => {
                 .then(answer => {
                     if(answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim()){
                         score++;
-                        log(socket,"CORRECTO - Lleva ",score, "aciertos.");
+                        log(socket," Lleva "+score+" aciertos.");
+                        biglog(socket,"CORRECTO", 'verde'); 
                         resolve(playOne());
                     } else {
-                        log(socket,"INCORRECTO.");
-                        log(socket,"Fin del juego. Aciertos:",score);
+                        biglog(socket,"INCORRECTO", 'red');
                         resolve();
                     }
                 })
@@ -228,7 +228,7 @@ exports.playCMD = (socket,rl) => {
         })
 
         .then(() => {
-            biglog(socket,score,'magenta');
+            fin(socket,score);
             rl.prompt();
 
         });
@@ -243,6 +243,11 @@ exports.deleteCMD = (socket,rl, id)  =>{
 	.then(() => {
 		rl.prompt();
 	});
+};
+
+const fin = (socket, score) => {
+    log(socket, `Fin del juego. Aciertos:`);
+    biglog(socket, score, 'magenta');
 };
 
 exports.creditsCMD = (socket,rl) =>{
