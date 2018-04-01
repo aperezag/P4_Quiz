@@ -188,34 +188,31 @@ exports.playCMD = (socket,rl) => {
     let score = 0;
     let toBeResolved = [];
 
-    const playOne = (socket) => {
-        return new Promise((resolve,reject) => {
+  const playOne = () => {
+    return new Promise((resolve, reject) => {
+      if (toBeResolved.length <= 0) {
+        log(socket, 'No hay nada más que preguntar');
+        resolve();
+        return;
+      }
 
-            if(toBeResolved.length <=0){
-                log(socket,"No hay nada mas que preguntar.");
-                log(socket,"Fin del juego. Aciertos:" ,score);
-                resolve();
-                return;
-            }
-            let pos = Math.floor(Math.random()*toBeResolved.length);
-            let quiz = toBeResolved[pos];
-            toBeResolved.splice(pos,1);
+      let id = Math.floor((Math.random() * toBeResolved.length));
+      let quiz = toBeResolved[id];
+      toBeResolved.splice(id, 1);
 
-            makeQuestion(rl, quiz.question+'? ')
-                .then(answer => {
-                    if(answer.toLowerCase().trim() === quiz.answer.toLowerCase().trim()){
-                        score++;
-                        log(socket," Lleva "+score+" aciertos.");
-                        biglog(socket,"CORRECTO", 'verde'); 
-                        resolve(playOne());
-                    } else {
-                        biglog(socket,"INCORRECTO", 'red');
-                        resolve();
-                    }
-                })
-        })
-    }
-
+      return makeQuestion(rl, `${quiz.question}?`)
+      .then(answer => {
+        if (answer.toLowerCase() === quiz.answer.toLowerCase().trim()) {
+          score++;
+          biglog(socket,'Correcto', 'green');
+          resolve(playOne());
+        } else {
+          biglog(socket, 'Incorrecto', 'red');
+          resolve();
+        }
+      });
+    });
+};
     models.quiz.findAll({raw: true})
         .then(quizzes => {
             toBeResolved = quizzes;

@@ -25,4 +25,4 @@ exports = module.exports = {
 	log,
 	biglog,
 	errorlog
-};
+}; 
